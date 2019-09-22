@@ -5,26 +5,36 @@ import { default as ReactSelect, components } from 'react-select'
 
 export default class Select extends Component {
 
-  formCustomOption = customOptionsCreator => {
-    const Option = props => {
-      return (
-        <components.Option {...props}>
-          {customOptionsCreator(props)}
-        </components.Option>
-      );
-    };
-    return { Option }
+  formCustomComponents = ( { customOptionsCreator }) => {
+    let customComponents = {}
+    if (customOptionsCreator) {
+      const Option = props => {
+        return (
+          <components.Option {...props}>
+            {customOptionsCreator(props)}
+          </components.Option>
+        );
+      };
+      customComponents = { Option }
+    }
+
+    return customComponents
   }
 
   renderSelect = () => {
-    const { options, isMulti, isLoading, cacheOptions, customOptionsCreator } = this.props
+    const { options, isMulti, isLoading, cacheOptions, customOptionsCreator, customStyles,
+      placeholder, noOptionsMessage } = this.props
     const selectProps = {
       cacheOptions,
+      ...(customOptionsCreator
+        && { components: this.formCustomComponents({ customOptionsCreator }) }), 
+      ...(customStyles && { styles: customStyles }),
       isMulti,
       isLoading,
       options,
       onInputChange: this.handleInputChange,
-      ...(customOptionsCreator && { components: this.formCustomOption(customOptionsCreator)}), 
+      placeholder,
+      noOptionsMessage
     }
     
     return (<ReactSelect {...selectProps} />)
