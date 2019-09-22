@@ -1,23 +1,24 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { get } from 'lodash';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { get } from 'lodash'
 
 import Select from '../components/common/Select'
 import { fetchMovies } from '../actions' 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
-]
 
 const transFormOptions = movies => {
-  return movies.map(movie => ({ label: movie.Title, key: movie.imdbID }))
+  return movies.map(movie => ({ label: movie.Title, value: movie.imdbID, year: movie.Year }))
+}
+
+const customOptionsCreator = (props) => {
+  return (
+    <React.Fragment>
+      <div> {props.data.label} </div>
+      <div> {props.data.year} </div>
+    </React.Fragment>
+  )
 }
 
 class MovieTypeAhead extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   fetchMovies = token => {
     const { fetchMovies } = this.props
@@ -25,25 +26,22 @@ class MovieTypeAhead extends Component {
   } 
 
   render() {
-    console.log("redered MovieTypeAhead",this.props)
     const { movies, isFetchingMovie, isErrorOnMovieFetch } = this.props
     const selectProps = {
-      isAsync: false,
-      isMulti: true,
       cacheOptions: true,
-      options: transFormOptions(movies),
-      isLoading: isFetchingMovie,
+      customOptionsCreator,
       handleInputChange: this.fetchMovies,
-      
+      isLoading: isFetchingMovie,
+      isMulti: true,
+      options: transFormOptions(movies),
     }
-    return (<Select {...selectProps} 
-    />) 
+
+    return (<Select {...selectProps} />) 
   }
 }
 
 
 const mapStateToProps = (state, ownProps) => {
-  console.log("CCCCCCCCCCCCCCC", state)
   return {
     ...ownProps,
     movies: getMovieState(state, 'movies'),

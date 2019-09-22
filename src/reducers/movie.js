@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 }
 
 const movie = (state = INITIAL_STATE, action) => {
-  const { movies, customMovieError } = action
+  const { movies, customMovieError, error } = action
 
   switch (action.type) {
     case INIT_MOVIES:
@@ -17,7 +17,8 @@ const movie = (state = INITIAL_STATE, action) => {
       return { ...state, isFetchingMovie: true }
     case MOVIE_FETCH_COMPLETED:
       return { ...state, movies, customMovieError, isFetchingMovie: false }
-    case MOVIE_FETCH_ERROR: 
+    case MOVIE_FETCH_ERROR:
+      console.log(error)
       return { ...state, isErrorOnMovieFetch: true, isFetchingMovie: false }
     }
 }  

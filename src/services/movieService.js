@@ -2,11 +2,12 @@ import { get } from './apiService'
 
 const API_KEY = "PlzBanMe"
 const BASE_URL = "http://www.omdbapi.com/"
+const DEFAULT_PAGE_SIZE = 20
 const URL = {
-  SEARCH_BY_TITLE: "http://www.omdbapi.com"
+  SEARCH_BY_TITLE: BASE_URL
 }
 
-const formParams = params => ({ apikey: API_KEY, ...params })
+const formParams = params => ({ apikey: API_KEY,  ...params })
 
 export const getMovies = async (token) => {
   const params = formParams({ s: token })
