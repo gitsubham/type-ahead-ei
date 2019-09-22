@@ -1,8 +1,7 @@
 import { get } from './apiService'
 
-const API_KEY = "PlzBanMe"
-const BASE_URL = "http://www.omdbapi.com/"
-const DEFAULT_PAGE_SIZE = 20
+import { API_KEY, BASE_URL }  from '../constants' 
+
 const URL = {
   SEARCH_BY_TITLE: BASE_URL
 }
