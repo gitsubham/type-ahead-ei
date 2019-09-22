@@ -1,0 +1,19 @@
+
+.quizBox  {
+    
+    height: 500px;
+    width: 1000px;
+}
+.flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.success {
+    background-color: green;
+}
+
+.error {
+    background-color: red;
+}
