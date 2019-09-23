@@ -1,4 +1,7 @@
-import { MOVIE_FETCH_REQUESTED, MOVIE_FETCH_COMPLETED, MOVIE_FETCH_ERROR } from './actionTypes'
+import { get } from 'lodash'
+
+import { MOVIE_FETCH_REQUESTED, MOVIE_FETCH_COMPLETED, MOVIE_FETCH_ERROR,
+  UPDATE_CUSTOM_ERROR_MESSAGE } from './actionTypes'
 import { movieService } from "../services"
 
 export const fetchMovies = token => async (dispatch) => {
@@ -7,10 +10,10 @@ export const fetchMovies = token => async (dispatch) => {
   try {
     let movies = await movieService.getMovies(token)
     let customMovieError = ''
-    if (movies.resp.Response === "True") {
+    if (movies && get(movies, 'resp.Response') === "True") {
       movies = movies.resp.Search
     } else {
-      customMovieError = movies.resp.Error
+      customMovieError = get(movies, 'resp.Error')
       movies = []
     }
     dispatch({ type: MOVIE_FETCH_COMPLETED, movies, customMovieError })
@@ -18,3 +21,12 @@ export const fetchMovies = token => async (dispatch) => {
     dispatch({ type: MOVIE_FETCH_ERROR, error })
   }
 }
+
+
+export const updateCustomErrorMessage = customMovieError => {
+  return {
+    type: UPDATE_CUSTOM_ERROR_MESSAGE,
+    customMovieError
+  }
+} 
+

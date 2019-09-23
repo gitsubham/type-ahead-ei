@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
 
 import { Select } from '../components'
-import { fetchMovies } from '../actions' 
-import { MOVIE_TYPE_AHEAD_PLACEHOLDER } from '../constants'
+import { fetchMovies, updateCustomErrorMessage } from '../actions'
+import { getMovieState } from '../utils' 
+import { MOVIE_TYPE_AHEAD_PLACEHOLDER, ERR_MSG_ON_MAX_MOVIE_SELECTION, NO_MOVIES_AVAILABLE,
+  MAX_MOVIE_SELECTIONS_ALLOWED } from '../constants'
 
 const transFormOptions = movies => {
   return movies.map(movie => ({ label: movie.Title, value: movie.imdbID, year: movie.Year }))
@@ -34,16 +35,36 @@ const customOptionsCreator = (props) => {
 }
 
 class MovieTypeAhead extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { isMovieSearchAllowed: true }
+  }
 
   fetchMovies = token => {
     const { fetchMovies } = this.props
+
     fetchMovies(token)
   }
 
   getNoOptionsMessage = () => (this.props.customMovieError)
 
+  onSelectChange = (selections, action) => {
+    console.log(selections, action)
+    const { updateCustomErrorMessage } = this.props
+    if (selections && selections.length >= MAX_MOVIE_SELECTIONS_ALLOWED) {
+      updateCustomErrorMessage(ERR_MSG_ON_MAX_MOVIE_SELECTION)
+      this.setState({ isMovieSearchAllowed: false })
+    } else if (action.action == "pop-value") {
+      this.setState({ isMovieSearchAllowed: true })
+      updateCustomErrorMessage('No Options')
+    }
+  }
+
   render() {
-    const { movies, isFetchingMovie, isErrorOnMovieFetch, customMovieError } = this.props
+    const { movies, isFetchingMovie, isErrorOnMovieFetch, customMovieError,
+      isSearchable } = this.props
+    const { isMovieSearchAllowed } = this.state
+    
     const selectProps = {
       cacheOptions: true,
       customStyles: getCustomStyles(),
@@ -51,8 +72,10 @@ class MovieTypeAhead extends Component {
       handleInputChange: this.fetchMovies,
       isLoading: isFetchingMovie,
       isMulti: true,
+      isSearchable: isMovieSearchAllowed, 
       noOptionsMessage: this.getNoOptionsMessage,
       options: transFormOptions(movies),
+      onChange: this.onSelectChange,
       placeholder: MOVIE_TYPE_AHEAD_PLACEHOLDER,
     }
 
@@ -73,17 +96,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchMovies: token => dispatch(fetchMovies(token)) 
+    fetchMovies: token => dispatch(fetchMovies(token)),
+    updateCustomErrorMessage: errMsg => dispatch(updateCustomErrorMessage(errMsg)),
   }
 }
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieTypeAhead);
-
-const getMovieState = (state, path) => {
-  return getState(state, `movie.${path}`)
-}
-
-const getState = (state, path) => {
-  return get(state, path) 
-}

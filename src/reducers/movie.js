@@ -1,4 +1,5 @@
-import { INIT_MOVIES, MOVIE_FETCH_REQUESTED, MOVIE_FETCH_COMPLETED, MOVIE_FETCH_ERROR } from '../actions/actionTypes' 
+import { INIT_MOVIES, MOVIE_FETCH_REQUESTED, MOVIE_FETCH_COMPLETED, MOVIE_FETCH_ERROR,
+  UPDATE_CUSTOM_ERROR_MESSAGE } from '../actions/actionTypes' 
 
 const INITIAL_STATE = {
   movies: [],
@@ -10,9 +11,6 @@ const movie = (state = INITIAL_STATE, action) => {
   const { movies, customMovieError, error } = action
 
   switch (action.type) {
-    case INIT_MOVIES:
-    default: 
-      return state
     case MOVIE_FETCH_REQUESTED: 
       return { ...state, isFetchingMovie: true }
     case MOVIE_FETCH_COMPLETED:
@@ -20,6 +18,11 @@ const movie = (state = INITIAL_STATE, action) => {
     case MOVIE_FETCH_ERROR:
       console.log(error)
       return { ...state, isErrorOnMovieFetch: true, isFetchingMovie: false }
+    case UPDATE_CUSTOM_ERROR_MESSAGE: 
+      return { ...state, movies: [], customMovieError }
+    case INIT_MOVIES:
+    default:
+      return state
     }
 }  
 

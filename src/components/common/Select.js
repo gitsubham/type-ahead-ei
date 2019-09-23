@@ -23,7 +23,7 @@ export default class Select extends Component {
 
   renderSelect = () => {
     const { options, isMulti, isLoading, cacheOptions, customOptionsCreator, customStyles,
-      placeholder, noOptionsMessage } = this.props
+      placeholder, noOptionsMessage, onChange, isSearchable } = this.props
     const selectProps = {
       cacheOptions,
       ...(customOptionsCreator
@@ -31,7 +31,9 @@ export default class Select extends Component {
       ...(customStyles && { styles: customStyles }),
       isMulti,
       isLoading,
+      isSearchable,
       options,
+      ...(onChange && { onChange }),
       onInputChange: this.handleInputChange,
       placeholder,
       noOptionsMessage

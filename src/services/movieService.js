@@ -10,5 +10,18 @@ const formParams = params => ({ apikey: API_KEY,  ...params })
 
 export const getMovies = async (token) => {
   const params = formParams({ s: token })
-  return get({ url: URL.SEARCH_BY_TITLE, params})
+  try { 
+    const resp = await get({ url: URL.SEARCH_BY_TITLE, params })
+    if (resp.isError) {
+      return {
+        isError: resp.isError,
+        httpCode: get(resp, 'error.response.status'),
+        errMsg: get(resp, 'error.response.data.Error')
+      }
+    }
+    return resp
+  } catch(error) {
+    // noop
+    console.log(error)
+  }
 }
