@@ -43,7 +43,7 @@ export default class Select extends Component {
   }
 
   handleInputChange = newVal => {
-    if (newVal != '') {
+    if (newVal !== '') {
       this.props.handleInputChange(newVal)
     }
   }
@@ -55,8 +55,14 @@ export default class Select extends Component {
 
 Select.propTypes = {
   cacheOptions: PropTypes.bool,
+  customStyles: PropTypes.object,
+  customOptionsCreator: PropTypes.func, 
   handleInputChange: PropTypes.func,
   isLoading: PropTypes.bool,
   isMulti: PropTypes.bool,
-  options: PropTypes.array,
+  isSearchable: PropTypes.bool,
+  noOptionsMessage: PropTypes.func,
+  onChange: PropTypes.func,
+  options: PropTypes.array.isRequired,
+  placeholder: PropTypes.string, 
 }

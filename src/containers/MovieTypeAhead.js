@@ -54,15 +54,14 @@ class MovieTypeAhead extends Component {
     if (selections && selections.length >= MAX_MOVIE_SELECTIONS_ALLOWED) {
       updateCustomErrorMessage(ERR_MSG_ON_MAX_MOVIE_SELECTION)
       this.setState({ isMovieSearchAllowed: false })
-    } else if (action.action == "pop-value") {
+    } else if (action.action === "pop-value") {
       this.setState({ isMovieSearchAllowed: true })
-      updateCustomErrorMessage('No Options')
+      updateCustomErrorMessage(NO_MOVIES_AVAILABLE)
     }
   }
 
   render() {
-    const { movies, isFetchingMovie, isErrorOnMovieFetch, customMovieError,
-      isSearchable } = this.props
+    const { movies, isFetchingMovie } = this.props
     const { isMovieSearchAllowed } = this.state
     
     const selectProps = {
