@@ -37,7 +37,10 @@ const customOptionsCreator = (props) => {
 class MovieTypeAhead extends Component {
   constructor(props) {
     super(props)
-    this.state = { isMovieSearchAllowed: true }
+    this.state = {
+      isMovieSearchAllowed: true,
+      selections: [], 
+    }
   }
 
   fetchMovies = token => {
@@ -48,16 +51,21 @@ class MovieTypeAhead extends Component {
 
   getNoOptionsMessage = () => (this.props.customMovieError)
 
-  onSelectChange = (selections, action) => {
-    console.log(selections, action)
-    const { updateCustomErrorMessage } = this.props
-    if (selections && selections.length >= MAX_MOVIE_SELECTIONS_ALLOWED) {
-      updateCustomErrorMessage(ERR_MSG_ON_MAX_MOVIE_SELECTION)
-      this.setState({ isMovieSearchAllowed: false })
-    } else if (action.action === "pop-value") {
-      this.setState({ isMovieSearchAllowed: true })
-      updateCustomErrorMessage(NO_MOVIES_AVAILABLE)
-    }
+  // onSelectChange = (selections, action) => {
+  //   console.log(selections, action)
+  //   const { updateCustomErrorMessage } = this.props
+  //   if (selections && selections.length >= MAX_MOVIE_SELECTIONS_ALLOWED) {
+  //     updateCustomErrorMessage(ERR_MSG_ON_MAX_MOVIE_SELECTION)
+  //     this.setState({ isMovieSearchAllowed: false })
+  //   } else if (action.action === "pop-value") {
+  //     this.setState({ isMovieSearchAllowed: true })
+  //     updateCustomErrorMessage(NO_MOVIES_AVAILABLE)
+  //   }
+  // }
+
+  onSelectChange = (selectedOption, action) => {
+    console.log(selectedOption, action)
+    this.setState(prevState => { selections: prevState.selections.push(selectedOption)})
   }
 
   render() {

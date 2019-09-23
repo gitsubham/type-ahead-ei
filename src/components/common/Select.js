@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { default as ReactSelect, components } from 'react-select'
-
+import { get } from 'lodash'
 
 export default class Select extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = { selections: []}
+  }
 
   formCustomComponents = ( { customOptionsCreator }) => {
     let customComponents = {}
@@ -42,14 +47,47 @@ export default class Select extends Component {
     return (<ReactSelect {...selectProps} />)
   }
 
-  handleInputChange = newVal => {
+  handleInputChange = e => {
+    const newVal = get(e, 'target.value')
     if (newVal !== '') {
       this.props.handleInputChange(newVal)
     }
   }
+
+  onOptionSelection = (option, action) => {
+    if (action === "push-option") {
+      this.setState(
+        prevState => ({ selections: prevState.selections.push(selectedOption) }),
+        this.props.onChange({option, selections: this.state.selections, action})
+      )
+    } else if (action === "pop-option") {
+      // to be implemented
+    }
+
+    
+  }
+
+  renderCustomSelect = () => {
+    const { options, isMulti, isLoading, cacheOptions, customOptionsCreator, customStyles,
+      placeholder, noOptionsMessage, onChange, isSearchable } = this.props
+
+    return (
+      <div>
+        <input 
+          type="text"
+          placeholder= "Search movies.."  
+          onBlur={this.handleInputChange}
+        />
+        {options && options.map(option => (<div onClick={() => this.onOptionSelection(option)}> {option.label} </div>))}
+      </div>
+    )
+  }
   
   render() { 
-    return this.renderSelect()
+    return (<React.Fragment>
+      {this.renderSelect()}
+      {this.renderCustomSelect()}
+    </React.Fragment>)  
   }
 }
 
