@@ -141,6 +141,7 @@
   left: 40%;
   position: relative;
   padding: 1%;
+  color: #757575;
 }
 
 .overlay {
@@ -155,4 +156,11 @@
 .remove-selected-option:hover {
   background-color: #FFBDAD;
   color: #DE350B;
-}   
+}
+
+.clear-all {
+  text-transform: uppercase;
+  color: #ea3e3e;
+  font-weight: 600;
+} 
+

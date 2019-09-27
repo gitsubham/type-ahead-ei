@@ -10,10 +10,6 @@ export default class Select extends Component {
     this.state = { selections: [], isOptionPanelOpen: false, token: '' }
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ options: nextProps.options })
-  }
-
   handleInputChange = e => {
     const newVal = get(e, 'target.value')
     this.setState({ isOptionPanelOpen : true, token: newVal })
@@ -46,7 +42,7 @@ export default class Select extends Component {
       }
     } else if (action === CLEAR_ALL_SELECTIONS) {
       this.setState(
-        prevState => ({ selections: [], token: '' }),
+        prevState => ({ selections: [], token: '', isOptionPanelOpen: false }),
         this.props.onChange({selectedOption, selections: this.getFilteredSelections(), action})
       )
     }
@@ -117,7 +113,7 @@ export default class Select extends Component {
               value={this.state.token}
             />)}
           </div>
-          <span className={"f12 m12"} onClick={() => this.onOptionSelection(null, CLEAR_ALL_SELECTIONS)}> clear all </span>
+          {!isEmpty(this.getFilteredSelections()) && <span className={"f12 m12 clear-all"} onClick={() => this.onOptionSelection(null, CLEAR_ALL_SELECTIONS)}> clear all </span>}
           {isOptionPanelOpen && <div className={"options-panel"}>
             {isEmpty(filteredOptions) && <div className={"option-panel-msg"}> {this.getNoOptionsMessage()}</div>}
             {filteredOptions && this.renderOptions(filteredOptions)} 
@@ -128,6 +124,7 @@ export default class Select extends Component {
   }
   
   render() { 
+    console.log(this.props.options)
     return (<React.Fragment>
       {this.renderCustomSelect()}
     </React.Fragment>)  
