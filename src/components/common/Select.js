@@ -86,7 +86,7 @@ export default class Select extends Component {
       <div className="tags-wrapper">
         {selections.map(selectedOption => {
           if (selectedOption.isSelected) {
-            return (<span className="selected-item"> {selectedOption.label}
+            return (<span key={selectedOption.value} className="selected-item"> {selectedOption.label}
               <span className={"remove-selected-option"} onClick={() => this.onOptionSelection(selectedOption, POP_OPTION)}> X </span></span>)
           }
           return null
