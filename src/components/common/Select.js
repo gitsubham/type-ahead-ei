@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { get, differenceWith, isEmpty } from 'lodash'
+
 import { PUSH_OPTION, POP_OPTION, CLEAR_ALL_SELECTIONS, NO_OPTIONS_AVAILABLE, LOADING_MSG } from '../../constants'
 
 export default class Select extends Component {
@@ -69,33 +70,21 @@ export default class Select extends Component {
     return  message
   }
 
-  getOptions = () => {
-
-  }
-
-  renderOptions = filteredOptions => {
-     const { customOptionsCreator } = this.props
+  getOptions = option => {
+    const { customOptionsCreator } = this.props
     if (customOptionsCreator) {
-      return filteredOptions.map(option => 
-              (<div className="options-panel-item" onClick={() => this.onOptionSelection(option, PUSH_OPTION)}> {customOptionsCreator(option, this.props)} </div>))
-    }
-    return filteredOptions.map(option => 
-              (<div className="options-panel-item" onClick={() => this.onOptionSelection(option, PUSH_OPTION)}> {option.label} </div>))
-  
+      return customOptionsCreator(option, this.props)
+    }  
+    return option.label
   }
 
-  getPlaceHolderTxt = () => (this.props.placeholder || "Search..." )
-
-  renderCustomSelect = () => {
-    const { options, isSearchable } = this.props
-    const { selections, isOptionPanelOpen } = this.state
-    const filteredOptions = this.getFilteredOptions(options, selections)
-
+  renderOptions = filteredOptions => filteredOptions.map(option => 
+              (<div key={option.value} className="options-panel-item" onClick={() => this.onOptionSelection(option, PUSH_OPTION)}> {this.getOptions(option)} </div>))
+  
+  renderSelections = selections => {
     return (
-      <div className="autocomplete-wrapper">
-        {isOptionPanelOpen && <div onClick={this.toggleOptionPanel} className={"overlay"}> </div>}
-        <div className="tags-wrapper">
-        {selections && selections.map(selectedOption => {
+      <div className="tags-wrapper">
+        {selections.map(selectedOption => {
           if (selectedOption.isSelected) {
             return (<span className="selected-item"> {selectedOption.label}
               <span className={"remove-selected-option"} onClick={() => this.onOptionSelection(selectedOption, POP_OPTION)}> X </span></span>)
@@ -103,28 +92,53 @@ export default class Select extends Component {
           return null
         })}
         </div>
-        <div className="autocomplete-input-section">
-          <div className={'input-control'}>
+    )
+  }
+
+  renderSearchTextBox = ()  => {
+    const { isSearchable } = this.props
+    const { token } = this.state
+
+    return (<div className={'input-control'}>
             {isSearchable && (<input
               type="text"
               placeholder={this.getPlaceHolderTxt()}
               onChange={this.handleInputChange}
               onClick={this.toggleOptionPanel}
-              value={this.state.token}
+              value={token}
             />)}
-          </div>
-          {!isEmpty(this.getFilteredSelections()) && <span className={"f12 m12 clear-all"} onClick={() => this.onOptionSelection(null, CLEAR_ALL_SELECTIONS)}> clear all </span>}
-          {isOptionPanelOpen && <div className={"options-panel"}>
+          </div>)
+  }
+
+  renderOptionPanel = () => {
+    const { options } = this.props
+    const { selections } = this.state
+    const filteredOptions = this.getFilteredOptions(options, selections)
+    return (<div className={"options-panel"}>
             {isEmpty(filteredOptions) && <div className={"option-panel-msg"}> {this.getNoOptionsMessage()}</div>}
             {filteredOptions && this.renderOptions(filteredOptions)} 
-          </div>}
+          </div>)
+  }
+
+  getPlaceHolderTxt = () => this.props.placeholder
+
+  renderCustomSelect = () => {
+    const { selections, isOptionPanelOpen } = this.state
+    
+    return (
+      <div className="autocomplete-wrapper">
+        {isOptionPanelOpen && <div onClick={this.toggleOptionPanel} className={"overlay"}> </div>}
+        {selections && this.renderSelections(selections)}
+        <div className="autocomplete-input-section">
+          {this.renderSearchTextBox()}
+          {!isEmpty(this.getFilteredSelections()) && <span className={"f12 m12 clear-all"} onClick={() => this.onOptionSelection(null, CLEAR_ALL_SELECTIONS)}> clear all </span>}
+          {isOptionPanelOpen && this.renderOptionPanel()}
         </div>
       </div>
     )
   }
   
   render() { 
-    console.log(this.props.options)
     return (<React.Fragment>
       {this.renderCustomSelect()}
     </React.Fragment>)  
@@ -138,6 +152,14 @@ Select.propTypes = {
   isSearchable: PropTypes.bool,
   noOptionsMessage: PropTypes.func,
   onChange: PropTypes.func,
-  options: PropTypes.array.isRequired,
+  options: PropTypes.array,
   placeholder: PropTypes.string, 
 }
+
+
+Select.defaultProps = {
+  isSearchable: true,
+  options: [],
+  onChange: () => {},
+  placeholder: "Search...",
+};
