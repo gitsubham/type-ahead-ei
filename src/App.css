@@ -32,7 +32,127 @@
   }
 }
 
+.make-relative{
+  position: relative;
+}
+.make-flex{
+  display: flex;
+}
 
 .m100 {
   margin: 100px;
 }
+
+.input-control {
+    /*align-items: center;
+    background-color: white;
+    border-color: hsl(0,0%,80%);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: default;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    min-height: 38px;
+    outline: 0 !important;
+    position: relative;
+    -webkit-transition: all 100ms;
+    transition: all 100ms;
+    box-sizing: border-box;
+    font-size: 20px;
+    border-radius: 20px;*/
+}
+
+
+
+.options-panel {
+    border: 1px solid #dedede;
+    box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.15);
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 100%;
+    z-index: 1;
+    background: #fff;
+}
+
+.options-panel-item{
+  padding: 10px;
+  cursor: pointer;
+}
+.options-panel-item:hover{
+  background-color: #9ecff9;;
+}
+.input-control{
+  display: flex;
+  flex: 1;
+}
+.input-control input{
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+  flex: 1;
+}
+.input-control input:focus{
+  outline: none;
+}
+.selected-item{
+  display: inline-block;
+  padding: 5px;
+  background: #ccc;
+  border-radius: 20px;
+  margin-right: 5px;
+  font-size: 14px;
+}
+.autocomplete-wrapper{
+  display: flex;
+  border: 1px solid #dedede;
+  padding: 5px;
+  border-radius: 20px;
+  align-items: center;
+}
+.autocomplete-input-section{
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  align-items: center;
+  font-size:14px;
+}
+
+.f12 {
+  font-size: 12px;
+}
+
+.m12 {
+    margin-right: 12px;
+}
+
+.option-panel-msg {
+  left: 40%;
+  position: relative;
+  padding: 1%;
+}
+
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+
+.remove-selected-option:hover {
+  background-color: #FFBDAD;
+  color: #DE350B;
+}   
