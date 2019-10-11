@@ -1,4 +1,4 @@
-export const API_KEY = "PlzBanMe"
+export const API_KEY = "53edd4d3"
 export const BASE_URL = "http://www.omdbapi.com/"
 
 export const MOVIE_TYPE_AHEAD_PLACEHOLDER = 'Search movie...'
