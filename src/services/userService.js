@@ -1,17 +1,15 @@
 import { get } from './apiService'
 
-import { API_KEY, BASE_URL }  from '../constants' 
+import { BASE_URL }  from '../constants' 
 
 const URL = {
   SEARCH_BY_TITLE: BASE_URL
 }
 
-const formParams = params => ({ apikey: API_KEY,  ...params })
 
-export const getMovies = async (token) => {
-  const params = formParams({ s: token })
+export const getUsers = async (token) => {
   try { 
-    const resp = await get({ url: URL.SEARCH_BY_TITLE, params })
+    const resp = await get({ url: URL.SEARCH_BY_TITLE })
     if (resp.isError) {
       return {
         isError: resp.isError,
@@ -19,7 +17,7 @@ export const getMovies = async (token) => {
         errMsg: get(resp, 'error.response.data.Error')
       }
     }
-    return resp
+    return resp.resp
   } catch(error) {
     // noop
     console.log(error)

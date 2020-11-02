@@ -19,12 +19,18 @@
     top: 100%;
     z-index: 1;
     background: #fff;
+    overflow-y: scroll;
+    max-height: 400px;
 }
 .options-panel-item{
   padding: 10px;
   cursor: pointer;
 }
 .options-panel-item:hover{
+  background-color: #9ecff9;;
+}
+
+.options-panel-item-hover{
   background-color: #9ecff9;;
 }
 .input-control{
@@ -57,7 +63,7 @@
   align-items: center;
 }
 .autocomplete-wrapper:hover {
-  border-color:#fb0000;
+  border-color: #5fce8b;
 }
 
 .autocomplete-input-section{
@@ -75,6 +81,11 @@
 
 .m12 {
     margin-right: 12px;
+}
+
+.f16 {
+  font-size: 16px;
+  line-height: 18px;
 }
 
 .option-panel-msg {

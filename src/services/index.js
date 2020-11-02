@@ -1,5 +1,5 @@
-import * as movieService from "./movieService"
+import * as userService from "./userService"
 
 export { 
-  movieService,
+  userService,
 }    
